@@ -1,0 +1,103 @@
+
+#----------------------------------------------------------------------
+# ui.R - Main UI File
+# - Develops main page and links to the other two pages in the app
+#----------------------------------------------------------------------
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(rlang)
+library(ggiraph)
+library(patchwork)
+library(stringr)
+library(thematic)
+library(showtext)
+library(shiny)
+library(shinymanager)
+
+
+thematic_shiny(font= "lato")
+
+import::from('pages/LGAinputs/ui.R', LGAModelUI)
+import::from('pages/LGAoutcomes/ui.R', outcomesUI)
+
+navbarPageWithInputs <- function(..., inputs) {
+	navbar <- navbarPage(...)
+	form <- tags$form(class = "navbar-form", inputs)
+	navbar[[3]][[1]]$children[[1]] <- htmltools::tagAppendChild(
+	navbar[[3]][[1]]$children[[1]], form)
+	navbar
+}
+
+ui <- shiny::tagList(
+  shinyjs::useShinyjs(),
+	navbarPageWithInputs(
+		id='navbar',
+		theme= 'flatly.min.css',
+		'Malaria intervention scenarios and projections: Nigeria impact modeling',
+		shiny::tabPanel(
+			value='Scenarios',
+			icon=shiny::icon('globe-africa'),
+			'Scenarios', 
+			LGAModelUI()),
+		shiny::tabPanel(
+			value='Projections',
+			icon=shiny::icon('chart-area'),
+			'Projections', 
+			outcomesUI()),
+		inputs=
+			list(
+				shiny::actionButton(
+					'infoButton',
+					icon=shiny::icon('info'),
+					'Info'
+				),
+				'-', # separator
+				shiny::actionButton(
+					'codeButton',
+					icon=shiny::icon('github'),
+					'Code',
+					onclick='window.open(\'https://github.com/numalariamodeling/hbhi-nigeria-publication-2021/tree/main/hbhi-nigeria-shiny-app\', \'_blank\')'
+				)
+			)
+			
+	),
+	shinyBS::bsModal(
+		id='infoModal', 
+		title='Malaria intervention scenarios and projections',
+		trigger='infoButton',
+		size='large',
+		"This tool visualizes intervention packages and projections for four scenarios considered for funding by
+		the Nigerian Malaria Elimination Program as part of the 
+		World Health Organization's ", htmltools::tags$a(href ="https://www.who.int/publications/i/item/WHO-CDS-GMP-2018.25", "High Burden to High Impact Initiative (HBHI)", target ="_blank"),
+		"to develop targeted interventions for high-burden countries.", "LGA-level intervention packages were used as
+		inputs in an agent-based model of malaria transmission as described in the manuscript entitled 'Application of 
+		mathematical modeling to inform intervention planning in Nigeria'.",
+		br(), br(),
+		
+		htmltools::tags$b("READ: LGA-level projections are highly uncertain and may not be meaningful"),
+		
+		br(), br(),
+		
+	  "To download per cycle coverage and additional simulation data for SMC,",  htmltools::tags$a(href ="https://github.com/numalariamodeling/hbhi-nigeria-publication-2021/tree/main/simulation_inputs/SMC", "Click here", target ="_blank"),
+		
+		br(), br(),
+		"To use the agent-based model, visit the ", htmltools::tags$a(href ="https://github.com/numalariamodeling/hbhi-nigeria-publication-2021", "HBHI Github Repo", target ="_blank"),
+		"for more details",
+		br(), br(),
+		"To view this message again, click on the ", htmltools::tags$b("Info"), " tab.",
+		br(), br(),
+		"If you have used this tool for your work, please consider
+		citing it: Ozodiegwu ID, Ambrose M, Galatas B, Runge M, Nandi A, Okuneye K, Dhanoa NP, Ehler T, Maikore I, 
+		Uhomoibhi P, Bever C, Noor A, Gerardin J. Malaria intervention scenarios and projections for the 2021 - 2025 Nigerian National Malaria Strategic Plan: An R Shiny Application." #TODO: add citation
+	),
+	hr(),
+	shiny::div(
+		style='text-align: center',
+		'Created by the Northwestern University Malaria Modeling Team: ',
+		shiny::HTML('<a href=\'https://numalariamodeling.org/\' target=\'_blank\'>https://numalariamodeling.org//</a>')
+	),
+	br()
+)
+
+ui <- secure_app(ui, choose_language = TRUE)
