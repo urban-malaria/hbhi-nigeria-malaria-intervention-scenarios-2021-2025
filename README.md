@@ -1,6 +1,6 @@
-
+ [![DOI](https://zenodo.org/badge/1135982133.svg)](https://doi.org/10.5281/zenodo.18274939)
   <h1 align="center">Malaria intervention scenarios and projections for the 2021 - 2025 Nigerian National Malaria Strategic Plan: An R Shiny Application</h1> 
-  [![DOI](https://zenodo.org/badge/1135982133.svg)](https://doi.org/10.5281/zenodo.18274939)
+ 
 
   
 
@@ -122,6 +122,7 @@ Project Link: [https://ifeomaozo.shinyapps.io/hbhi-nigeria/](https://ifeomaozo.s
 * [Neena Parveen Dhanoa @NU Malaria modeling Team ](https://www.linkedin.com/in/neena-parveen-dhanoa-3686b11b3/)
 * [All NU Malaria Modeling Team members](https://www.numalariamodeling.org/team.html)
 * [Monique Ambrose and Caitlin Bever @Institute for Disease Modeling](https://www.idmod.org/team)
+
 
 
 
